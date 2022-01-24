@@ -14,10 +14,6 @@ func Init(cfg aws.Config) {
 	_client = dynamodb.NewFromConfig(cfg)
 }
 
-type Dbnamodb struct {
-	tableName *string
-}
-
 type dynamodbTable struct {
 	tableName *string
 }
@@ -88,12 +84,6 @@ type dynamodbItem struct {
 	ReqGetItem        ReqGetItem
 	ReqBatchGetItem   ReqBatchGetItem
 	ReqBatchWriteItem ReqBatchWriteItem
-}
-
-func NewDao(tableName string) *Dbnamodb {
-	return &Dbnamodb{
-		tableName: aws.String(tableName),
-	}
 }
 
 func NewItemDao(tableName string) *dynamodbItem {

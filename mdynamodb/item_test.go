@@ -1,4 +1,3 @@
-// Package mdynamodb_test provides
 package mdynamodb_test
 
 import (
