@@ -6,11 +6,10 @@ import (
 	"log"
 	"testing"
 
-	"aws-client/mses"
-
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/credentials"
+	"github.com/sun-fight/aws-client/mses"
 )
 
 var _cfg aws.Config
@@ -32,7 +31,7 @@ func initTestCfg() {
 
 func TestDeleteTable(t *testing.T) {
 	initTestCfg()
-	mses.Init(_cfg, "from@email.com")
+	mses.Init(_cfg)
 	newEmail := mses.NewEmailAll("subject", "test text", "<h1>test text</h1>", "to@email.com")
 	res, err := newEmail.SendEmail()
 	if err != nil {
