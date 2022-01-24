@@ -1,7 +1,7 @@
 package mses_test
 
 import (
-	"aws-example/mses"
+	"aws-client/mses"
 	"context"
 	"fmt"
 	"log"

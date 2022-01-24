@@ -2,9 +2,9 @@
 package mdynamodb_test
 
 import (
-	"aws-example/mdynamodb"
-	"aws-example/mdynamodb/model"
-	"aws-example/mdynamodb/pb"
+	"aws-client/mdynamodb"
+	"aws-client/mdynamodb/model"
+	"aws-client/mdynamodb/pb"
 	"fmt"
 	"testing"
 	"time"

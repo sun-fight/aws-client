@@ -2,8 +2,8 @@
 package mdynamodb_test
 
 import (
-	"aws-example/mdynamodb"
-	"aws-example/mdynamodb/model"
+	"aws-client/mdynamodb"
+	"aws-client/mdynamodb/model"
 	"fmt"
 	"testing"
 

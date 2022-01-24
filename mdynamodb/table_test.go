@@ -2,7 +2,7 @@
 package mdynamodb_test
 
 import (
-	"aws-example/mdynamodb"
+	"aws-client/mdynamodb"
 	"context"
 	"log"
 	"testing"

@@ -1,4 +1,4 @@
-module aws-example
+module aws-client
 
 go 1.17
 
