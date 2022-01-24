@@ -2,9 +2,6 @@
 package mdynamodb_test
 
 import (
-	"aws-client/mdynamodb"
-	"aws-client/mdynamodb/model"
-	"aws-client/mdynamodb/pb"
 	"fmt"
 	"testing"
 	"time"
@@ -13,6 +10,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/feature/dynamodb/attributevalue"
 	"github.com/aws/aws-sdk-go-v2/feature/dynamodb/expression"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb/types"
+	"github.com/sun-fight/aws-client/mdynamodb"
+	"github.com/sun-fight/aws-client/mdynamodb/pb"
 )
 
 func TestPutItem(t *testing.T) {
@@ -104,78 +103,5 @@ func TestDeleteItem(t *testing.T) {
 	_, err := itemDao.DeleteItem()
 	if err != nil {
 		t.Fatal(err)
-	}
-}
-
-func TestBatchGetItem(t *testing.T) {
-	initTestCfg()
-	mdynamodb.Init(_cfg)
-	itemDao := mdynamodb.NewItemDao("")
-	itemDao.ReqBatchGetItem = mdynamodb.ReqBatchGetItem{
-		RequestItems: map[string]types.KeysAndAttributes{
-			"User": {
-				Keys: []map[string]types.AttributeValue{
-					{
-						"UserID": &types.AttributeValueMemberN{
-							Value: "123",
-						},
-					},
-				},
-			},
-		},
-	}
-	out, err := itemDao.BatchGetItem()
-	if err != nil {
-		t.Fatal(err)
-	}
-	for k, v := range out.Responses {
-		fmt.Println(k)
-		for k1, v1 := range v {
-			fmt.Println(k1)
-			var user model.User
-			err = attributevalue.UnmarshalMap(v1, &user)
-			fmt.Println(err)
-			fmt.Println(user)
-		}
-	}
-}
-
-func TestBatchWriteItem(t *testing.T) {
-	initTestCfg()
-	mdynamodb.Init(_cfg)
-	itemDao := mdynamodb.NewItemDao("")
-	reqItems := make(map[string][]types.WriteRequest)
-
-	reqItems["User"] = []types.WriteRequest{
-		{
-			DeleteRequest: &types.DeleteRequest{
-				Key: map[string]types.AttributeValue{
-					"UserID": &types.AttributeValueMemberN{
-						Value: "123",
-					},
-				},
-			},
-			// PutRequest: &types.PutRequest{
-			// 	Item: map[string]types.AttributeValue{
-			// 		"UserID": &types.AttributeValueMemberN{
-			// 			Value: "123",
-			// 		},
-			// 	},
-			// },
-		},
-	}
-	itemDao.ReqBatchWriteItem = mdynamodb.ReqBatchWriteItem{
-		RequestItems: reqItems,
-	}
-	out, err := itemDao.BatchWriteItem()
-	if err != nil {
-		t.Fatal(err)
-	}
-	for k, v := range out.UnprocessedItems {
-		fmt.Println(k)
-		for k1, v1 := range v {
-			fmt.Println(k1)
-			fmt.Println(v1)
-		}
 	}
 }

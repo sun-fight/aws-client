@@ -2,7 +2,6 @@
 package mdynamodb_test
 
 import (
-	"aws-client/mdynamodb"
 	"context"
 	"log"
 	"testing"
@@ -10,6 +9,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/credentials"
+	"github.com/sun-fight/aws-client/mdynamodb"
 )
 
 var _cfg aws.Config

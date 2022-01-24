@@ -1,4 +1,4 @@
-module aws-client
+module github.com/sun-fight/aws-client
 
 go 1.17
 
@@ -7,14 +7,13 @@ require (
 	github.com/aws/aws-sdk-go-v2/config v1.13.0
 	github.com/aws/aws-sdk-go-v2/credentials v1.8.0
 	github.com/aws/aws-sdk-go-v2/feature/dynamodb/attributevalue v1.6.0
+	github.com/aws/aws-sdk-go-v2/feature/dynamodb/expression v1.3.7
 	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.13.0
 	github.com/aws/aws-sdk-go-v2/service/sesv2 v1.11.0
-	github.com/spf13/cast v1.4.1
 	google.golang.org/protobuf v1.27.1
 )
 
 require (
-	github.com/aws/aws-sdk-go-v2/feature/dynamodb/expression v1.3.7 // indirect
 	github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.10.0 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/configsources v1.1.4 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.2.0 // indirect

@@ -2,14 +2,14 @@
 package mdynamodb_test
 
 import (
-	"aws-client/mdynamodb"
-	"aws-client/mdynamodb/model"
 	"fmt"
 	"testing"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/feature/dynamodb/attributevalue"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb/types"
+	"github.com/sun-fight/aws-client/mdynamodb"
+	"github.com/sun-fight/aws-client/mdynamodb/pb"
 )
 
 func TestTransactGetItems(t *testing.T) {
@@ -31,11 +31,11 @@ func TestTransactGetItems(t *testing.T) {
 		t.Fatal(err)
 	}
 	for k, v := range out.Responses {
-		var user model.User
-		err = attributevalue.UnmarshalMap(v.Item, &user)
+		var userInfo pb.UserInfo
+		err = attributevalue.UnmarshalMap(v.Item, &userInfo)
 		fmt.Println(k)
 		fmt.Println(err)
-		fmt.Println(user)
+		fmt.Println(userInfo.String())
 	}
 }
 
