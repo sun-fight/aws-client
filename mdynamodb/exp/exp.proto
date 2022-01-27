@@ -1,31 +1,31 @@
 syntax = "proto3";
 package pb;
-option go_package = "mdynamodb/exp";
+option go_package = "./pb";
 
-enum EnumExpUpdate {
-    UpdateNone = 0;
-    UpdateAdd = 1;
-    UpdateSet = 2;
-    UpdateRemove = 3;
-    UpdateDelete = 4;
+enum EnumExpUpdateOperationMode {
+    OperationModeNone = 0;
+    OperationModeAdd = 1;
+    OperationModeSet = 2;
+    OperationModeRemove = 3;
+    OperationModeDelete = 4;
 }
 
 // setValueMode https://github.com/aws/aws-sdk-go-v2/blob/main/feature/dynamodb/expression/operand.go
 // set value use special way
-enum EnumExpUpdateSet {
-    UpdateSetNone = 0;
-    UpdateSetPlus = 1;
-    UpdateSetMinus = 2;
-    UpdateSetListAppend = 3;
-    UpdateSetIfNotExists = 4;
+enum EnumExpUpdateSetValMode {
+    SetValModeNone = 0;
+    SetValModePlus = 1;
+    SetValModeMinus = 2;
+    SetValModeListAppend = 3;
+    SetValModeIfNotExists = 4;
 }
 
-message ExpUpdateSet{
+message ExpUpdateSet {
     string Name = 1;
-    EnumExpUpdateSet EnumExpUpdateSet = 2;
+    EnumExpUpdateSetValMode SetValMode = 2;
 }
 
-message ExpUpdate{
-    EnumExpUpdate EnumExpUpdate = 1;
+message ExpUpdateItem {
+    EnumExpUpdateOperationMode OperationMode = 1;
     repeated ExpUpdateSet ExpUpdateSets = 2;
 }

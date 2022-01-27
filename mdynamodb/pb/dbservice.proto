@@ -28,7 +28,7 @@ message ResGetUserInfo {
 }
 
 message ReqTestUpdateItem {
-    repeated ExpUpdateOperation ExpUpdateOperations = 1;
+    repeated ExpUpdateItem ExpUpdateItem = 1;
     UserInfo UserInfo = 2;
 }
 

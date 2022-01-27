@@ -94,8 +94,8 @@ func TestUpdateItemByProto(t *testing.T) {
 	mdynamodb.Init(_cfg)
 
 	updateItem := &pb.ReqTestUpdateItem{
-		ExpUpdateOperations: []*pb.ExpUpdateOperation{
-			&pb.ExpUpdateOperation{
+		ExpUpdateItem: []*pb.ExpUpdateItem{
+			&pb.ExpUpdateItem{
 				OperationMode: pb.EnumExpUpdateOperationMode_OperationModeSet,
 				ExpUpdateSets: []*pb.ExpUpdateSet{
 					&pb.ExpUpdateSet{

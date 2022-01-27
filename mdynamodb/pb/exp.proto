@@ -25,7 +25,7 @@ message ExpUpdateSet {
     EnumExpUpdateSetValMode SetValMode = 2;
 }
 
-message ExpUpdateOperation {
+message ExpUpdateItem {
     EnumExpUpdateOperationMode OperationMode = 1;
     repeated ExpUpdateSet ExpUpdateSets = 2;
 }
