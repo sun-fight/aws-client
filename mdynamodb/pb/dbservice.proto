@@ -1,0 +1,34 @@
+syntax = "proto3";
+package pb;
+option go_package = "./pb";
+
+import "exp.proto";
+
+message Grid {
+    int32 ID = 1;
+    int32 X = 2;
+    int32 Y = 3;
+}
+
+message UserInfo {
+    int64 UserID = 2;
+    int32 CreatedAt = 3;
+    int32 DeletedAt = 4;
+    int32 LastLoginAt = 5;
+    map<string, int32> Plunder = 6;
+    map<string, Grid> Maps = 7;
+}
+  
+message ReqGetUserInfo {
+    int64 UserID = 1;
+}
+
+message ResGetUserInfo {
+    UserInfo UserInfo = 2;
+}
+
+message ReqTestUpdateItem {
+    repeated ExpUpdateOperation ExpUpdateOperations = 1;
+    UserInfo UserInfo = 2;
+}
+

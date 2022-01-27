@@ -89,6 +89,72 @@ func TestUpdateItem(t *testing.T) {
 	}
 }
 
+func TestUpdateItemByProto(t *testing.T) {
+	initTestCfg()
+	mdynamodb.Init(_cfg)
+
+	updateItem := &pb.ReqTestUpdateItem{
+		ExpUpdateOperations: []*pb.ExpUpdateOperation{
+			&pb.ExpUpdateOperation{
+				OperationMode: pb.EnumExpUpdateOperationMode_OperationModeSet,
+				ExpUpdateSets: []*pb.ExpUpdateSet{
+					&pb.ExpUpdateSet{
+						Name: "LastLoginAt",
+					},
+				},
+			},
+		},
+		UserInfo: &pb.UserInfo{
+			LastLoginAt: int32(time.Now().Unix()),
+		},
+	}
+
+	var updateBuilder expression.UpdateBuilder
+	for _, v := range updateItem.ExpUpdateOperations {
+		switch v.OperationMode {
+		case pb.EnumExpUpdateOperationMode_OperationModeSet:
+			for _, v2 := range v.ExpUpdateSets {
+				// 获取 name,val
+				name := expression.Name(v2.Name)
+				var val expression.OperandBuilder
+				switch v2.Name {
+				case "LastLoginAt":
+					val = expression.Value(updateItem.UserInfo.LastLoginAt)
+				default:
+				}
+				switch v2.SetValMode {
+				case pb.EnumExpUpdateSetValMode_SetValModePlus:
+					val = name.Plus(val)
+				case pb.EnumExpUpdateSetValMode_SetValModeIfNotExists:
+					val = name.IfNotExists(val)
+				default:
+				}
+				updateBuilder = updateBuilder.Set(name, val)
+			}
+		default:
+		}
+	}
+
+	exp, err := expression.NewBuilder().WithUpdate(updateBuilder).
+		WithCondition(expression.AttributeExists(expression.Name("UserID"))).
+		Build()
+	if err != nil {
+		t.Fatal(err)
+		return
+	}
+	itemDao := mdynamodb.NewItemDao("User")
+	_, err = itemDao.UpdateItem(mdynamodb.ReqUpdateItem{
+		Key:                       map[string]types.AttributeValue{"UserID": &types.AttributeValueMemberN{Value: "123"}},
+		UpdateExpression:          exp.Update(),
+		ExpressionAttributeNames:  exp.Names(),
+		ExpressionAttributeValues: exp.Values(),
+		ConditionExpression:       exp.Condition(),
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+}
+
 func TestDeleteItem(t *testing.T) {
 	initTestCfg()
 	mdynamodb.Init(_cfg)

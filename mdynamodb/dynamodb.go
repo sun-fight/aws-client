@@ -18,10 +18,16 @@ type dynamodbTable struct {
 	tableName *string
 }
 
+// exp, err := expression.NewBuilder().
+// 		WithUpdate(expression.Set(expression.Name("LastLoginAt"),
+// 			expression.Value(time.Now().Unix()))).
+// 		WithCondition(expression.AttributeExists(expression.Name("UserID"))).
+// 		Build()
 // Key:                       map[string]types.AttributeValue{"UserID": &types.AttributeValueMemberN{Value: "123"}},
-// UpdateExpression:          aws.String("SET Nickname = :u"),
-// ExpressionAttributeValues: map[string]types.AttributeValue{":u": &types.AttributeValueMemberN{Value: "sun"}},
-// ConditionExpression: "attribute_exists(UserID)",
+// UpdateExpression:          exp.Update(),
+// ExpressionAttributeNames:  exp.Names(),
+// ExpressionAttributeValues: exp.Values(),
+// ConditionExpression:       exp.Condition(),
 type ReqUpdateItem struct {
 	Key                       map[string]types.AttributeValue
 	ConditionExpression       *string
