@@ -99,7 +99,8 @@ func TestUpdateItemByProto(t *testing.T) {
 				OperationMode: pb.EnumExpUpdateOperationMode_OperationModeSet,
 				ExpUpdateSets: []*pb.ExpUpdateSet{
 					&pb.ExpUpdateSet{
-						Name: "LastLoginAt",
+						Name:       "LastLoginAt",
+						SetValMode: pb.EnumExpUpdateSetValMode_SetValModeMinus,
 					},
 				},
 			},
@@ -125,6 +126,8 @@ func TestUpdateItemByProto(t *testing.T) {
 				switch v2.SetValMode {
 				case pb.EnumExpUpdateSetValMode_SetValModePlus:
 					val = name.Plus(val)
+				case pb.EnumExpUpdateSetValMode_SetValModeMinus:
+					val = name.Minus(val)
 				case pb.EnumExpUpdateSetValMode_SetValModeIfNotExists:
 					val = name.IfNotExists(val)
 				default:
@@ -160,7 +163,7 @@ func TestDeleteItem(t *testing.T) {
 	mdynamodb.Init(_cfg)
 	itemDao := mdynamodb.NewItemDao("User")
 	_, err := itemDao.DeleteItem(mdynamodb.ReqDeleteItem{
-		Key: map[string]types.AttributeValue{"UserID": &types.AttributeValueMemberN{Value: "123"}},
+		Key: map[string]types.AttributeValue{"UserID": &types.AttributeValueMemberN{Value: "1234"}},
 	})
 	if err != nil {
 		t.Fatal(err)
