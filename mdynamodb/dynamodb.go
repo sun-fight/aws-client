@@ -49,7 +49,11 @@ type ReqPutItem struct {
 	ExpressionAttributeValues map[string]types.AttributeValue
 }
 
-// Key: map[string]types.AttributeValue{"UserID": &types.AttributeValueMemberN{Value: "123"}},
+// dao.ReqGetItem = mdynamodb.ReqGetItem{
+// 	Key: map[string]types.AttributeValue{
+// 		"UserID": &types.AttributeValueMemberN{Value: cast.ToString(req.UserID)},
+// 	},
+// }
 type ReqGetItem struct {
 	Key            map[string]types.AttributeValue
 	ConsistentRead *bool
@@ -77,13 +81,7 @@ type ReqBatchWriteItem struct {
 }
 
 type dynamodbItem struct {
-	tableName         *string
-	ReqUpdateItem     ReqUpdateItem
-	ReqDeleteItem     ReqDeleteItem
-	ReqPutItem        ReqPutItem
-	ReqGetItem        ReqGetItem
-	ReqBatchGetItem   ReqBatchGetItem
-	ReqBatchWriteItem ReqBatchWriteItem
+	tableName *string
 }
 
 func NewItemDao(tableName string) *dynamodbItem {

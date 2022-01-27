@@ -17,7 +17,7 @@ func Init(cfg aws.Config) {
 	_client = sesv2.NewFromConfig(cfg)
 }
 
-type Email struct {
+type ReqSendEmail struct {
 	FromEmailAddress *string
 	Subject          *string
 	Text             *string
@@ -28,12 +28,15 @@ type Email struct {
 	ReplyToAddresses []string
 }
 
+type Email struct {
+}
+
 func NewEmail() *Email {
 	return &Email{}
 }
 
-func NewEmailAll(subject, text, htmlBody string, toAddresses ...string) *Email {
-	return &Email{
+func NewReqSendEmail(subject, text, htmlBody string, toAddresses ...string) ReqSendEmail {
+	return ReqSendEmail{
 		Subject:     aws.String(subject),
 		Text:        aws.String(text),
 		HtmlBody:    aws.String(htmlBody),
@@ -41,21 +44,21 @@ func NewEmailAll(subject, text, htmlBody string, toAddresses ...string) *Email {
 	}
 }
 
-func (item *Email) SendEmail() (*sesv2.SendEmailOutput, error) {
+func (item *Email) SendEmail(req ReqSendEmail) (*sesv2.SendEmailOutput, error) {
 	content := &types.EmailContent{
 		Simple: &types.Message{
 			Body: &types.Body{
 				Html: &types.Content{
-					Data:    (item.HtmlBody),
+					Data:    (req.HtmlBody),
 					Charset: aws.String(_charSet),
 				},
 				Text: &types.Content{ //不支持html的客户端走这个
-					Data:    (item.Text),
+					Data:    (req.Text),
 					Charset: aws.String(_charSet),
 				},
 			},
 			Subject: &types.Content{
-				Data:    (item.Subject),
+				Data:    (req.Subject),
 				Charset: aws.String(_charSet),
 			},
 		},
@@ -63,12 +66,12 @@ func (item *Email) SendEmail() (*sesv2.SendEmailOutput, error) {
 	params := &sesv2.SendEmailInput{
 		Content: content,
 		Destination: &types.Destination{
-			BccAddresses: item.BccAddresses, //密送
-			CcAddresses:  item.CcAddresses,  //抄送
-			ToAddresses:  item.ToAddresses,  //收件人
+			BccAddresses: req.BccAddresses, //密送
+			CcAddresses:  req.CcAddresses,  //抄送
+			ToAddresses:  req.ToAddresses,  //收件人
 		},
-		FromEmailAddress: item.FromEmailAddress,
-		ReplyToAddresses: item.ReplyToAddresses,
+		FromEmailAddress: req.FromEmailAddress,
+		ReplyToAddresses: req.ReplyToAddresses,
 	}
 	res, err := _client.SendEmail(context.TODO(), params)
 	return res, err

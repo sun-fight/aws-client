@@ -28,17 +28,15 @@ type ReqTransactWriteItems struct {
 }
 
 type Transact struct {
-	ReqTransactGetItems   ReqTransactGetItems
-	ReqTransactWriteItems ReqTransactWriteItems
 }
 
 func NewTransactDao() *Transact {
 	return &Transact{}
 }
 
-func (item *Transact) TransactGetItems() (*dynamodb.TransactGetItemsOutput, error) {
+func (item *Transact) TransactGetItems(req ReqTransactGetItems) (*dynamodb.TransactGetItemsOutput, error) {
 	output, err := _client.TransactGetItems(context.TODO(), &dynamodb.TransactGetItemsInput{
-		TransactItems: item.ReqTransactGetItems.TransactItems,
+		TransactItems: req.TransactItems,
 	})
 	if err != nil {
 		return nil, err
@@ -50,9 +48,9 @@ func (item *Transact) TransactGetItems() (*dynamodb.TransactGetItemsOutput, erro
 	return output, err
 }
 
-func (item *Transact) TransactWriteItems() (*dynamodb.TransactWriteItemsOutput, error) {
+func (item *Transact) TransactWriteItems(req ReqTransactWriteItems) (*dynamodb.TransactWriteItemsOutput, error) {
 	output, err := _client.TransactWriteItems(context.TODO(), &dynamodb.TransactWriteItemsInput{
-		TransactItems: item.ReqTransactWriteItems.TransactItems,
+		TransactItems: req.TransactItems,
 	})
 	if err != nil {
 		return nil, err

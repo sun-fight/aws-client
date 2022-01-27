@@ -29,13 +29,13 @@ func initTestCfg() {
 
 }
 
-func TestDeleteTable(t *testing.T) {
+func TestSendEmail(t *testing.T) {
 	initTestCfg()
 	mses.Init(_cfg)
-	newEmail := mses.NewEmailAll("subject", "test text", "<h1>test text</h1>", "to@email.com")
-	res, err := newEmail.SendEmail()
+	newEmail := mses.NewEmail()
+	res, err := newEmail.SendEmail(mses.NewReqSendEmail("subject", "test text", "<h1>test text</h1>", "to@email.com"))
 	if err != nil {
-		fmt.Println(err)
+		t.Error(err)
 		return
 	}
 	fmt.Println(res)

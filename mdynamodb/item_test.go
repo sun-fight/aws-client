@@ -38,12 +38,11 @@ func TestPutItem(t *testing.T) {
 	fmt.Println(aws.ToString(exp.Condition()))
 	fmt.Println(exp.Names())
 	itemDao := mdynamodb.NewItemDao("User")
-	itemDao.ReqPutItem = mdynamodb.ReqPutItem{
+	_, err = itemDao.PutItem(mdynamodb.ReqPutItem{
 		ItemMap:                  itemMap,
 		ConditionExpression:      exp.Condition(),
 		ExpressionAttributeNames: exp.Names(),
-	}
-	_, err = itemDao.PutItem()
+	})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -54,11 +53,10 @@ func TestGetItem(t *testing.T) {
 	mdynamodb.Init(_cfg)
 
 	itemDao := mdynamodb.NewItemDao("User")
-	itemDao.ReqGetItem = mdynamodb.ReqGetItem{
-		Key: map[string]types.AttributeValue{"UserID": &types.AttributeValueMemberN{Value: "123"}},
-	}
 	var userInfo pb.UserInfo
-	_, err := itemDao.GetItem(&userInfo)
+	_, err := itemDao.GetItem(mdynamodb.ReqGetItem{
+		Key: map[string]types.AttributeValue{"UserID": &types.AttributeValueMemberN{Value: "123"}},
+	}, &userInfo)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -79,14 +77,13 @@ func TestUpdateItem(t *testing.T) {
 		return
 	}
 	itemDao := mdynamodb.NewItemDao("User")
-	itemDao.ReqUpdateItem = mdynamodb.ReqUpdateItem{
+	_, err = itemDao.UpdateItem(mdynamodb.ReqUpdateItem{
 		Key:                       map[string]types.AttributeValue{"UserID": &types.AttributeValueMemberN{Value: "123"}},
 		UpdateExpression:          exp.Update(),
 		ExpressionAttributeNames:  exp.Names(),
 		ExpressionAttributeValues: exp.Values(),
 		ConditionExpression:       exp.Condition(),
-	}
-	_, err = itemDao.UpdateItem()
+	})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -96,10 +93,9 @@ func TestDeleteItem(t *testing.T) {
 	initTestCfg()
 	mdynamodb.Init(_cfg)
 	itemDao := mdynamodb.NewItemDao("User")
-	itemDao.ReqDeleteItem = mdynamodb.ReqDeleteItem{
+	_, err := itemDao.DeleteItem(mdynamodb.ReqDeleteItem{
 		Key: map[string]types.AttributeValue{"UserID": &types.AttributeValueMemberN{Value: "123"}},
-	}
-	_, err := itemDao.DeleteItem()
+	})
 	if err != nil {
 		t.Fatal(err)
 	}

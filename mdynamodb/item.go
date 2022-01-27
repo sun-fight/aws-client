@@ -7,10 +7,10 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
 )
 
-func (item *dynamodbItem) GetItem(out interface{}) (*dynamodb.GetItemOutput, error) {
+func (item *dynamodbItem) GetItem(req ReqGetItem, out interface{}) (*dynamodb.GetItemOutput, error) {
 	output, err := _client.GetItem(context.TODO(), &dynamodb.GetItemInput{
-		Key:            item.ReqGetItem.Key,
-		ConsistentRead: item.ReqGetItem.ConsistentRead,
+		Key:            req.Key,
+		ConsistentRead: req.ConsistentRead,
 		TableName:      item.tableName,
 	})
 	if err != nil {
@@ -29,47 +29,47 @@ func (item *dynamodbItem) GetItem(out interface{}) (*dynamodb.GetItemOutput, err
 // 		Value: "11211",
 // 	},
 // }
-func (item *dynamodbItem) PutItem() (output *dynamodb.PutItemOutput, err error) {
+func (item *dynamodbItem) PutItem(req ReqPutItem) (output *dynamodb.PutItemOutput, err error) {
 	return _client.PutItem(context.TODO(), &dynamodb.PutItemInput{
 		TableName:                 item.tableName,
-		Item:                      item.ReqPutItem.ItemMap,
-		ConditionExpression:       item.ReqPutItem.ConditionExpression,
-		ExpressionAttributeNames:  item.ReqPutItem.ExpressionAttributeNames,
-		ExpressionAttributeValues: item.ReqPutItem.ExpressionAttributeValues,
+		Item:                      req.ItemMap,
+		ConditionExpression:       req.ConditionExpression,
+		ExpressionAttributeNames:  req.ExpressionAttributeNames,
+		ExpressionAttributeValues: req.ExpressionAttributeValues,
 	})
 }
 
-func (item *dynamodbItem) UpdateItem() (output *dynamodb.UpdateItemOutput, err error) {
+func (item *dynamodbItem) UpdateItem(req ReqUpdateItem) (output *dynamodb.UpdateItemOutput, err error) {
 	return _client.UpdateItem(context.TODO(), &dynamodb.UpdateItemInput{
 		TableName:                 item.tableName,
-		Key:                       item.ReqUpdateItem.Key,
-		ConditionExpression:       item.ReqUpdateItem.ConditionExpression,
-		UpdateExpression:          item.ReqUpdateItem.UpdateExpression,
-		ExpressionAttributeNames:  item.ReqUpdateItem.ExpressionAttributeNames,
-		ExpressionAttributeValues: item.ReqUpdateItem.ExpressionAttributeValues,
-		ReturnValues:              item.ReqUpdateItem.ReturnValues,
+		Key:                       req.Key,
+		ConditionExpression:       req.ConditionExpression,
+		UpdateExpression:          req.UpdateExpression,
+		ExpressionAttributeNames:  req.ExpressionAttributeNames,
+		ExpressionAttributeValues: req.ExpressionAttributeValues,
+		ReturnValues:              req.ReturnValues,
 	})
 }
 
-func (item *dynamodbItem) DeleteItem() (output *dynamodb.DeleteItemOutput, err error) {
+func (item *dynamodbItem) DeleteItem(req ReqDeleteItem) (output *dynamodb.DeleteItemOutput, err error) {
 	return _client.DeleteItem(context.TODO(), &dynamodb.DeleteItemInput{
 		TableName:                 item.tableName,
-		Key:                       item.ReqDeleteItem.Key,
-		ConditionExpression:       item.ReqDeleteItem.ConditionExpression,
-		ExpressionAttributeNames:  item.ReqDeleteItem.ExpressionAttributeNames,
-		ExpressionAttributeValues: item.ReqDeleteItem.ExpressionAttributeValues,
-		ReturnValues:              item.ReqDeleteItem.ReturnValues,
+		Key:                       req.Key,
+		ConditionExpression:       req.ConditionExpression,
+		ExpressionAttributeNames:  req.ExpressionAttributeNames,
+		ExpressionAttributeValues: req.ExpressionAttributeValues,
+		ReturnValues:              req.ReturnValues,
 	})
 }
 
-func (item *dynamodbItem) BatchGetItem() (output *dynamodb.BatchGetItemOutput, err error) {
+func (item *dynamodbItem) BatchGetItem(req ReqBatchGetItem) (output *dynamodb.BatchGetItemOutput, err error) {
 	return _client.BatchGetItem(context.TODO(), &dynamodb.BatchGetItemInput{
-		RequestItems: item.ReqBatchGetItem.RequestItems,
+		RequestItems: req.RequestItems,
 	})
 }
 
-func (item *dynamodbItem) BatchWriteItem() (output *dynamodb.BatchWriteItemOutput, err error) {
+func (item *dynamodbItem) BatchWriteItem(req ReqBatchWriteItem) (output *dynamodb.BatchWriteItemOutput, err error) {
 	return _client.BatchWriteItem(context.TODO(), &dynamodb.BatchWriteItemInput{
-		RequestItems: item.ReqBatchWriteItem.RequestItems,
+		RequestItems: req.RequestItems,
 	})
 }
