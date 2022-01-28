@@ -37,7 +37,7 @@ func initTestCfg() {
 func TestDeleteTable(t *testing.T) {
 	initTestCfg()
 	mdynamodb.Init(_cfg)
-	tableDao := mdynamodb.NewTableDao("CreditCardOffers")
+	tableDao := mdynamodb.NewTableDao("User")
 	_, err := tableDao.DeleteTable()
 	if err != nil {
 		t.Fatal(err)
