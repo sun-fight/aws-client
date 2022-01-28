@@ -111,7 +111,7 @@ func TestUpdateItemByProto(t *testing.T) {
 	}
 
 	var updateBuilder expression.UpdateBuilder
-	for _, v := range updateItem.ExpUpdateOperations {
+	for _, v := range updateItem.ExpUpdateItem {
 		switch v.OperationMode {
 		case pb.EnumExpUpdateOperationMode_OperationModeSet:
 			for _, v2 := range v.ExpUpdateSets {
@@ -163,7 +163,7 @@ func TestDeleteItem(t *testing.T) {
 	mdynamodb.Init(_cfg)
 	itemDao := mdynamodb.NewItemDao("User")
 	_, err := itemDao.DeleteItem(mdynamodb.ReqDeleteItem{
-		Key: map[string]types.AttributeValue{"UserID": &types.AttributeValueMemberN{Value: "1234"}},
+		Key: map[string]types.AttributeValue{"UserID": &types.AttributeValueMemberN{Value: "123"}},
 	})
 	if err != nil {
 		t.Fatal(err)

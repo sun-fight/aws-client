@@ -16,8 +16,8 @@ func TestTransactGetItems(t *testing.T) {
 	initTestCfg()
 	mdynamodb.Init(_cfg)
 
-	transcatDao := mdynamodb.NewTransactDao()
-	out, err := transcatDao.TransactGetItems(mdynamodb.ReqTransactGetItems{
+	dao := mdynamodb.NewTransactDao()
+	out, err := dao.TransactGetItems(mdynamodb.ReqTransactGetItems{
 		TransactItems: []types.TransactGetItem{
 			{Get: &types.Get{
 				Key:                  map[string]types.AttributeValue{"UserID": &types.AttributeValueMemberN{Value: "123"}},
@@ -42,8 +42,8 @@ func TestTransactWriteItems(t *testing.T) {
 	initTestCfg()
 	mdynamodb.Init(_cfg)
 
-	transcatDao := mdynamodb.NewTransactDao()
-	_, err := transcatDao.TransactWriteItems(mdynamodb.ReqTransactWriteItems{
+	dao := mdynamodb.NewTransactDao()
+	_, err := dao.TransactWriteItems(mdynamodb.ReqTransactWriteItems{
 		TransactItems: []types.TransactWriteItem{
 			{
 				ConditionCheck: &types.ConditionCheck{
