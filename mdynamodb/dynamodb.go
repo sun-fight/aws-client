@@ -82,6 +82,15 @@ type ReqBatchGetItem struct {
 	RequestItems map[string]types.KeysAndAttributes
 }
 
+type ReqQueryInput struct {
+	KeyConditionExpression    *string
+	FilterExpression          *string
+	ExpressionAttributeNames  map[string]string
+	ExpressionAttributeValues map[string]types.AttributeValue
+	ExclusiveStartKey         map[string]types.AttributeValue
+	Limit                     *int32
+}
+
 type ReqBatchWriteItem struct {
 	RequestItems map[string][]types.WriteRequest
 }

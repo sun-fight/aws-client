@@ -62,6 +62,18 @@ func (item *dynamodbItem) DeleteItem(req ReqDeleteItem) (output *dynamodb.Delete
 	})
 }
 
+func (item *dynamodbItem) Query(req ReqQueryInput) (output *dynamodb.QueryOutput, err error) {
+	return _client.Query(context.TODO(), &dynamodb.QueryInput{
+		TableName:                 item.tableName,
+		KeyConditionExpression:    req.KeyConditionExpression,
+		FilterExpression:          req.FilterExpression,
+		ExpressionAttributeNames:  req.ExpressionAttributeNames,
+		ExpressionAttributeValues: req.ExpressionAttributeValues,
+		ExclusiveStartKey:         req.ExclusiveStartKey,
+		Limit:                     req.Limit,
+	})
+}
+
 func (item *dynamodbItem) BatchGetItem(req ReqBatchGetItem) (output *dynamodb.BatchGetItemOutput, err error) {
 	return _client.BatchGetItem(context.TODO(), &dynamodb.BatchGetItemInput{
 		RequestItems: req.RequestItems,

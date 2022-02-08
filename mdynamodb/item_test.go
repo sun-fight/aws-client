@@ -63,6 +63,45 @@ func TestGetItem(t *testing.T) {
 	fmt.Println(userInfo.String())
 }
 
+func TestQuery(t *testing.T) {
+	initTestCfg()
+	mdynamodb.Init(_cfg)
+
+	itemDao := mdynamodb.NewItemDao("User")
+
+	var keyCond expression.KeyConditionBuilder = expression.KeyEqual(
+		expression.Key("UserID"), expression.Value(123))
+
+	exp, err := expression.NewBuilder().
+		WithKeyCondition(keyCond).
+		Build()
+	if err != nil {
+		t.Fatal(err)
+		return
+	}
+	out, err := itemDao.Query(mdynamodb.ReqQueryInput{
+		KeyConditionExpression:    exp.KeyCondition(),
+		ExpressionAttributeNames:  exp.Names(),
+		ExpressionAttributeValues: exp.Values(),
+		Limit:                     aws.Int32(2),
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	fmt.Println(out)
+	out, err = itemDao.Query(mdynamodb.ReqQueryInput{
+		KeyConditionExpression:    exp.KeyCondition(),
+		ExpressionAttributeNames:  exp.Names(),
+		ExpressionAttributeValues: exp.Values(),
+		ExclusiveStartKey:         out.LastEvaluatedKey,
+		Limit:                     aws.Int32(1),
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	fmt.Println(out)
+}
+
 func TestUpdateItem(t *testing.T) {
 	initTestCfg()
 	mdynamodb.Init(_cfg)
@@ -163,7 +202,9 @@ func TestDeleteItem(t *testing.T) {
 	mdynamodb.Init(_cfg)
 	itemDao := mdynamodb.NewItemDao("User")
 	_, err := itemDao.DeleteItem(mdynamodb.ReqDeleteItem{
-		Key: map[string]types.AttributeValue{"UserID": &types.AttributeValueMemberN{Value: "123"}},
+		Key: map[string]types.AttributeValue{"UserID": &types.AttributeValueMemberN{Value: "123"},
+			"Sk": &types.AttributeValueMemberS{Value: "user2"},
+		},
 	})
 	if err != nil {
 		t.Fatal(err)
