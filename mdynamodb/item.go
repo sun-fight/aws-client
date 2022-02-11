@@ -65,6 +65,7 @@ func (item *dynamodbItem) DeleteItem(req ReqDeleteItem) (output *dynamodb.Delete
 func (item *dynamodbItem) Query(req ReqQueryInput) (output *dynamodb.QueryOutput, err error) {
 	return _client.Query(context.TODO(), &dynamodb.QueryInput{
 		TableName:                 item.tableName,
+		IndexName:                 req.IndexName,
 		KeyConditionExpression:    req.KeyConditionExpression,
 		FilterExpression:          req.FilterExpression,
 		ExpressionAttributeNames:  req.ExpressionAttributeNames,

@@ -83,6 +83,7 @@ type ReqBatchGetItem struct {
 }
 
 type ReqQueryInput struct {
+	IndexName                 *string
 	KeyConditionExpression    *string
 	FilterExpression          *string
 	ExpressionAttributeNames  map[string]string
