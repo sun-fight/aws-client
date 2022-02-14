@@ -67,10 +67,12 @@ func TestQuery(t *testing.T) {
 	initTestCfg()
 	mdynamodb.Init(_cfg)
 
-	itemDao := mdynamodb.NewItemDao("User")
+	itemDao := mdynamodb.NewItemDao("battle-royale")
 
 	var keyCond expression.KeyConditionBuilder = expression.KeyEqual(
-		expression.Key("UserID"), expression.Value(123))
+		expression.Key("PK"), expression.Value("GAME#3d4285f0-e52b-401a-a59b-112b38c4a26b")).
+		And(expression.KeyBetween(expression.Key("SK"),
+			expression.Value("#METADATA#3d4285f0-e52b-401a-a59b-112b38c4a26b"), expression.Value("USER$")))
 
 	exp, err := expression.NewBuilder().
 		WithKeyCondition(keyCond).
@@ -83,7 +85,6 @@ func TestQuery(t *testing.T) {
 		KeyConditionExpression:    exp.KeyCondition(),
 		ExpressionAttributeNames:  exp.Names(),
 		ExpressionAttributeValues: exp.Values(),
-		Limit:                     aws.Int32(2),
 	})
 	if err != nil {
 		t.Fatal(err)
