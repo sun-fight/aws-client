@@ -17,7 +17,7 @@ func (item *dynamodbItem) GetItem(req ReqGetItem, out interface{}) (*dynamodb.Ge
 		return nil, err
 	}
 	if output.Item == nil {
-		err = ErrGetItemNotFound
+		err = ErrRecordNotFound
 		return nil, err
 	}
 	err = attributevalue.UnmarshalMap(output.Item, &out)
@@ -63,7 +63,7 @@ func (item *dynamodbItem) DeleteItem(req ReqDeleteItem) (output *dynamodb.Delete
 }
 
 func (item *dynamodbItem) Query(req ReqQueryInput) (output *dynamodb.QueryOutput, err error) {
-	return _client.Query(context.TODO(), &dynamodb.QueryInput{
+	output, err = _client.Query(context.TODO(), &dynamodb.QueryInput{
 		TableName:                 item.tableName,
 		IndexName:                 req.IndexName,
 		KeyConditionExpression:    req.KeyConditionExpression,
@@ -73,6 +73,13 @@ func (item *dynamodbItem) Query(req ReqQueryInput) (output *dynamodb.QueryOutput
 		ExclusiveStartKey:         req.ExclusiveStartKey,
 		Limit:                     req.Limit,
 	})
+	if err != nil {
+		return
+	}
+	if output.Count == 0 {
+		err = ErrRecordNotFound
+	}
+	return
 }
 
 func (item *dynamodbItem) BatchGetItem(req ReqBatchGetItem) (output *dynamodb.BatchGetItemOutput, err error) {

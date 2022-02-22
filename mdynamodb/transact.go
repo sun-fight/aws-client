@@ -42,7 +42,7 @@ func (item *Transact) TransactGetItems(req ReqTransactGetItems) (*dynamodb.Trans
 		return nil, err
 	}
 	if output.Responses == nil {
-		err = ErrGetItemNotFound
+		err = ErrRecordNotFound
 		return nil, err
 	}
 	return output, err

@@ -3,5 +3,5 @@ package mdynamodb
 import "errors"
 
 var (
-	ErrGetItemNotFound = errors.New("record not found")
+	ErrRecordNotFound = errors.New("record not found")
 )
