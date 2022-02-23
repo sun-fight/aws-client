@@ -201,7 +201,7 @@ func TestUpdateItemByProto(t *testing.T) {
 func TestDeleteItem(t *testing.T) {
 	initTestCfg()
 	mdynamodb.Init(_cfg)
-	itemDao := mdynamodb.NewItemDao("User")
+	itemDao := mdynamodb.NewItemDao("Tbales")
 	_, err := itemDao.DeleteItem(mdynamodb.ReqDeleteItem{
 		Key: map[string]types.AttributeValue{"UserID": &types.AttributeValueMemberN{Value: "123"},
 			"Sk": &types.AttributeValueMemberS{Value: "user2"},
