@@ -62,6 +62,31 @@ func (item *dynamodbItem) DeleteItem(req ReqDeleteItem) (output *dynamodb.Delete
 	})
 }
 
+// 查询一个
+func (item *dynamodbItem) QueryOne(req ReqQueryInput, out interface{}) (err error) {
+	output, err := item.Query(req)
+	if err != nil {
+		return
+	}
+	err = attributevalue.UnmarshalMap(output.Items[0], &out)
+	return
+}
+
+// 只能查询到一个
+func (item *dynamodbItem) QueryOneOnly(req ReqQueryInput, out interface{}) (err error) {
+	output, err := item.Query(req)
+	if err != nil {
+		return
+	}
+	// 超过一个
+	if output.Count > 1 {
+		err = ErrQueryThanOne
+		return
+	}
+	err = attributevalue.UnmarshalMap(output.Items[0], &out)
+	return
+}
+
 func (item *dynamodbItem) Query(req ReqQueryInput) (output *dynamodb.QueryOutput, err error) {
 	output, err = _client.Query(context.TODO(), &dynamodb.QueryInput{
 		TableName:                 item.tableName,
