@@ -3,6 +3,7 @@ package mdynamodb
 import (
 	"context"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/feature/dynamodb/attributevalue"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
 )
@@ -64,6 +65,7 @@ func (item *dynamodbItem) DeleteItem(req ReqDeleteItem) (output *dynamodb.Delete
 
 // 查询一个
 func (item *dynamodbItem) QueryOne(req ReqQueryInput, out interface{}) (err error) {
+	req.Limit = aws.Int32(2)
 	output, err := item.Query(req)
 	if err != nil {
 		return
@@ -74,6 +76,7 @@ func (item *dynamodbItem) QueryOne(req ReqQueryInput, out interface{}) (err erro
 
 // 只能查询到一个
 func (item *dynamodbItem) QueryOneOnly(req ReqQueryInput, out interface{}) (err error) {
+	req.Limit = aws.Int32(2)
 	output, err := item.Query(req)
 	if err != nil {
 		return
