@@ -90,6 +90,8 @@ type ReqQueryInput struct {
 	ExpressionAttributeValues map[string]types.AttributeValue
 	ExclusiveStartKey         map[string]types.AttributeValue
 	Limit                     *int32
+	ScanIndexForward          *bool
+	Select                    types.Select
 }
 
 type ReqBatchWriteItem struct {

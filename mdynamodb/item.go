@@ -100,6 +100,8 @@ func (item *dynamodbItem) Query(req ReqQueryInput) (output *dynamodb.QueryOutput
 		ExpressionAttributeValues: req.ExpressionAttributeValues,
 		ExclusiveStartKey:         req.ExclusiveStartKey,
 		Limit:                     req.Limit,
+		ScanIndexForward:          req.ScanIndexForward,
+		Select:                    req.Select,
 	})
 	if err != nil {
 		return
