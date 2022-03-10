@@ -63,17 +63,6 @@ func (item *dynamodbItem) DeleteItem(req ReqDeleteItem) (output *dynamodb.Delete
 	})
 }
 
-// 查询一个
-func (item *dynamodbItem) QueryOne(req ReqQueryInput, out interface{}) (err error) {
-	req.Limit = aws.Int32(2)
-	output, err := item.Query(req)
-	if err != nil {
-		return
-	}
-	err = attributevalue.UnmarshalMap(output.Items[0], &out)
-	return
-}
-
 // 只能查询到一个
 func (item *dynamodbItem) QueryOneOnly(req ReqQueryInput, out interface{}) (err error) {
 	req.Limit = aws.Int32(2)
@@ -105,9 +94,6 @@ func (item *dynamodbItem) Query(req ReqQueryInput) (output *dynamodb.QueryOutput
 	})
 	if err != nil {
 		return
-	}
-	if output.Count == 0 {
-		err = ErrRecordNotFound
 	}
 	return
 }
