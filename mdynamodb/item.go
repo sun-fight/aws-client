@@ -98,6 +98,17 @@ func (item *dynamodbItem) Query(req ReqQueryInput) (output *dynamodb.QueryOutput
 	return
 }
 
+func (item *dynamodbItem) QueryMust(req ReqQueryInput) (output *dynamodb.QueryOutput, err error) {
+	output, err = item.Query(req)
+	if err != nil {
+		return
+	}
+	if output.Count == 0 {
+		err = ErrRecordNotFound
+	}
+	return
+}
+
 func (item *dynamodbItem) BatchGetItem(req ReqBatchGetItem) (output *dynamodb.BatchGetItemOutput, err error) {
 	return _client.BatchGetItem(context.TODO(), &dynamodb.BatchGetItemInput{
 		RequestItems: req.RequestItems,
